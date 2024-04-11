@@ -1,0 +1,11 @@
+<section class="main">
+  <ul class="todo-list">
+    @for (todo of visibleTodos(); track $index) {
+      <app-todo
+      [todo]="todo"
+      [isEditing]="editingId === todo.id"
+      (setEditingId)="setEditingId($event)"
+    ></app-todo>
+    }
+  </ul>
+</section>
