@@ -25,13 +25,13 @@ export class TodosService{
       text:textMessage,
       completed:false
     };
-    this.postTheTodo(newTodo);
+    // this.postTheTodo(newTodo);
     this.todoSig.update((todos)=>[...todos,newTodo]);
   }
 
-  getAllTodos() : Observable<TodosInterface> {
-    return this.http.get<TodosInterface>("http://localhost:6060/api/todos");
-  }
+  // getAllTodos() : Observable<TodosInterface> {
+  //   return this.http.get<TodosInterface>("http://localhost:6060/api/todos");
+  // }
 
   changeTodo(_id:number|undefined,textMessage:string) : void {
     // Update the values in the signal
@@ -47,7 +47,7 @@ export class TodosService{
       text:textMessage,
       completed:false
     };
-    this.postTheTodo(editedTodo);
+    // this.postTheTodo(editedTodo);
   }
 
   removeTodo(_todo:TodoInterface):void{
@@ -59,11 +59,11 @@ export class TodosService{
       this.todoSig.set(updatedTodos);
     }
     // Send a delete request to the Db
-    const uri : string = "http://localhost:6060/api/todos?id="+_todo.id?.toString();
-    this.unsubscribe$ = this.http.delete<messageInterface>(uri)
-                        .subscribe({next: () => {
-                          this.postUnsubscribe();
-                        }});
+    // const uri : string = "http://localhost:6060/api/todos?id="+_todo.id?.toString();
+    // this.unsubscribe$ = this.http.delete<messageInterface>(uri)
+    //                     .subscribe({next: () => {
+    //                       this.postUnsubscribe();
+    //                     }});
   }
 
   toggleTodo(_id:number | undefined):void{
@@ -79,10 +79,10 @@ export class TodosService{
       const updatedTodos:TodoInterface[] = [...copiedTodoSig.slice(0, index), editedTodo, ...copiedTodoSig.slice(index + 1)];
       this.todoSig.set(updatedTodos);
       // Send a request to the DB to update the values
-      this.unsubscribe$ = this.http.post<messageInterface>("http://localhost:6060/api/todos/complete",editedTodo)
-                        .subscribe({next: () => {
-                          this.postUnsubscribe();
-                        }});
+      // this.unsubscribe$ = this.http.post<messageInterface>("http://localhost:6060/api/todos/complete",editedTodo)
+      //                   .subscribe({next: () => {
+      //                     this.postUnsubscribe();
+      //                   }});
     }
   }
 

@@ -39,12 +39,12 @@ export class MainComponent implements OnInit,OnDestroy {
   }
 
   private getAllTodos():void{
-    this.provideTodoService.getAllTodos()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe({
-        next: (res:TodosInterface) => this.provideTodoService.todoSig.set(res.allTodos),
-        error: ()=> console.log("Error")
-      })
+    // this.provideTodoService.getAllTodos()
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe({
+    //     next: (res:TodosInterface) => this.provideTodoService.todoSig.set(res.allTodos),
+    //     error: ()=> console.log("Error")
+    //   })
   }
 
   setEditingId(editingid:number|null):void{
