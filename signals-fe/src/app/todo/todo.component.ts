@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild, inject, input, output } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, inject, input, output } from "@angular/core";
 import { TodoInterface } from "../types/todo.interface";
 import { CommonModule } from "@angular/common";
 import { TodosService } from "../services/todos.service";
@@ -9,7 +9,7 @@ import { TodosService } from "../services/todos.service";
   selector:'app-todo',
   templateUrl:"./todo.component.html"
 })
-export class TodoComponent implements OnInit,OnChanges {
+export class TodoComponent implements OnInit {
 
   todo = input.required<TodoInterface>();
   isEditing = input.required<boolean>();
@@ -21,15 +21,6 @@ export class TodoComponent implements OnInit,OnChanges {
 
   ngOnInit() : void {
     this.editingText = this.todo().text;
-    console.log(this.todo)
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['isEditing'].currentValue) {
-      setTimeout(() => {
-        this.textInput?.nativeElement.focus();
-      }, 0);
-    }
   }
 
   changeText(event: Event) {
