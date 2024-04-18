@@ -3,7 +3,7 @@ import { TodoInterface } from "../types/todo.interface";
 import { messageInterface } from "../types/message.interface";
 import { HttpClient } from "@angular/common/http";
 import { FilterEnum } from "../types/filter.enum";
-import { Observable, Subscription } from "rxjs";
+import { Observable, Subscription, switchMap } from "rxjs";
 import { TodosInterface } from "../types/todos.interface";
 
 @Injectable({
@@ -73,18 +73,21 @@ export class TodosService{
       this.todoSig.set(updatedTodos);
       // Send a request to the DB to update the values
       this.unsubscribe$ = this.http.post<messageInterface>("http://localhost:6060/api/todos/complete",editedTodo)
-                        .subscribe({next: () => {
-                          this.postUnsubscribe();
-                        }});
+                          .subscribe({next: () => {
+                            this.postUnsubscribe();
+                          }});
     }
   }
 
   private postTheTodo(todo:TodoInterface):void{
     this.unsubscribe$ = this.http.post<messageInterface>("http://localhost:6060/api/todos",todo)
-                        .subscribe({next: () => {
-                          this.postUnsubscribe();
-                          this.getAllUpdatedTodos();
-                        }});
+                        .pipe(
+                          switchMap(()=>{
+                            this.postUnsubscribe();
+                            return this.getAllUpdatedTodos();
+                          })
+                        )
+                        .subscribe();
   }
 
   private postUnsubscribe() : void {
@@ -93,7 +96,7 @@ export class TodosService{
     }
   }
 
-  private getAllUpdatedTodos() : void {
+  private async getAllUpdatedTodos() {
     this.unsubscribeGet$ = this.getAllTodos()
                             .subscribe((res:TodosInterface)=>{
                               this.todoSig.set(res.allTodos);
